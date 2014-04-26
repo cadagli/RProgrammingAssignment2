@@ -5,26 +5,27 @@
 
 ## Given an invertible matrix as input, makeCacheMatrix creates an object
 ## containing the matrix and a holder for its inverse.
+##
 ## Arguments
-##   m   An invertible matrix. 
+##   x   An invertible matrix. 
 ##   
 ## The result object is a list of three functions:
 ##
 ## "get" is function() that returns the matrix;
-## "set" is function(m) that resets the function to m, assumed to be
-##       invertible, and clears the inverse cache;
+## "set" is function(newM) that resets the stored matrix to newM, assumed
+##       to be invertible, and clears the inverse cache;
 ## "getInv" is function() that returns the inverse of the matrix;
-## "setInv" is function(mi) that sets the inverse to mi. No checks are to
-##          confirm that mi the inverse of the matrix. This function is
-##          designed to be used by the companion function cacheSolve.
+## "setInv" is function(inv) that sets the inverse to inv. No checks are
+##          made to ensure that inv the inverse of the matrix. This function
+##          is designed to be used by the companion function cacheSolve.
 
 makeCacheMatrix <- function(x = matrix()) {
     mInv <- NULL
     set <- function(newM) {
-        m <<- newM
+        x <<- newM
         mInv <<- NULL
     }
-    get <- function() { m }
+    get <- function() { x }
     setInv <- function(inv) { mInv <<- inv }
     getInv <- function() { mInv }
     list(
@@ -32,7 +33,6 @@ makeCacheMatrix <- function(x = matrix()) {
         get = get,
         getInv = getInv,
         setInv = setInv)
-    
 }
 
 
@@ -46,7 +46,6 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
     mInv <- x$getInv()
     if(!is.null(mInv)) {
-        message("getting cached inverse")
         return(mInv)
     }
     m <- x$get()
